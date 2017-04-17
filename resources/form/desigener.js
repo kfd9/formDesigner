@@ -133,6 +133,7 @@ var Designer = Ext.create('Ext.container.Viewport', {
         }
     }, {
         region: 'center',
+        overflowY: 'auto',
         html: '<center><div class="form-designer-show-parent" id="formShowViewId"></div></center>'
         /*items: formPage*/
     }]

@@ -5,7 +5,10 @@ FormDesigner.designElement = [];
 var mouseOffset = null;
 var iMouseDown = false;
 var lMouseState = false;
+//拖动的对象
 var dragObject = null;
+//拖动对象时的坐标
+var dragPosition = null;
 
 var DragDrops = [];
 var curTarget = null;
@@ -56,6 +59,9 @@ function mouseMove(ev){
         mouseInForm = false;
     }*/
     if(dragObject){
+        if(mousePos.x == dragPosition.x && mousePos.y == dragPosition.y){
+            return false;
+        }
         for (var i = 0; i < dragHelper.childNodes.length; i++)
             dragHelper.removeChild(dragHelper.childNodes[i]);
         var cn = dragObject.cloneNode(true);
@@ -116,9 +122,6 @@ function findActiveChildren(e){
             if(node.getAttribute('field-type') == 'temp'){
                 child = node;
             }
-            /*if(node.className.indexOf('form-designer-show-field-active') >= 0){
-                child = node;
-            }*/
         });
     }
     return child;
@@ -271,6 +274,7 @@ var makeDraggable = function(item){
         }
         dragObject  = this;
         mouseOffset = getMouseOffset(this, ev);
+        dragPosition = mouseCoords(ev);
         return false;
     }
 }
