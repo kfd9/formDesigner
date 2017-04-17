@@ -84,6 +84,7 @@ function mouseMove(ev){
                         formFieldClick(formFieldDiv);
                     };
                     f.appendChild(formFieldDiv);
+                    formFieldDiv.setAttribute("field-type", 'temp');
                 }
             }else{
                 delActiveChildren(f, false);
@@ -103,7 +104,7 @@ function delActiveChildren(e, createField){
     if(child){
         e.removeChild(child);
         if(createField){
-            createFormField('testShow' + (formFieldDivNum++), dragObject.getAttribute('field-type'));
+            createFormField(dragObject.getAttribute('field-type'), true);
         }
     }
 }
@@ -112,9 +113,12 @@ function findActiveChildren(e){
     var child = null;
     if(e.childElementCount > 0){
         e.childNodes.forEach(function(node, index, nodeList){
-            if(node.className.indexOf('form-designer-show-field-active') >= 0){
+            if(node.getAttribute('field-type') == 'temp'){
                 child = node;
             }
+            /*if(node.className.indexOf('form-designer-show-field-active') >= 0){
+                child = node;
+            }*/
         });
     }
     return child;

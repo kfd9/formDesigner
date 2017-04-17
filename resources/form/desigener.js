@@ -185,7 +185,7 @@ var formFieldDelClick = function(item){
     formFieldClick(item);
 }
 
-var createFormFieldDiv = function(id, type){
+var createFormFieldDiv = function(id, type, select){
     var f = document.getElementById('formShowViewId');
     var formFieldDiv = document.createElement("div");
     formFieldDiv.id = id;
@@ -215,15 +215,23 @@ var createFormFieldDiv = function(id, type){
     formFieldCopyDelSpan.appendChild(delI);
     //formFieldCopyDelSpan.innerHTML = '<i class="design-ico-copy" ours-e-click="cloneControl"></i><i class="design-ico-delete" ours-e-click="deleteControl"></i>';
     formFieldDiv.appendChild(formFieldCopyDelSpan);
+    if(select){
+        formFieldSelectorSelect(formFieldDiv);
+    }
 }
 
-var createFormField = function(id, type){
-    createFormFieldDiv(id, type);
+var createFormField = function(type, select){
+    var num = formFieldDivNum++;
+    var id = 'testShow' + num;
+    createFormFieldDiv(id, type, select);
     Ext.widget(type, {
-        name: 'name',
-        fieldLabel: 'Name1',
+        name: 'Field' + num,
+        fieldLabel: 'Field' + num,
         disabled: true,
         disabledCls: 'form-readonly',
+        style: {
+            width: '100%'
+        },
         renderTo: id/*,
         readOnly: true*/
     }).getEl().setStyle('z-index','0');
@@ -244,5 +252,3 @@ makeFormFieldViewDraggable();
 createDragContainer(document.getElementById('formFieldViewId'), document.getElementById('formShowViewId'));
 createDragHelper();
 getFormShowViewPosition();
-
-/*createFormField('testShow' + (formFieldDivNum++), 'textfield');*/
