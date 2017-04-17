@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>表单设计器demo</title>
+<!--标题图标-->
+<link rel="icon" href="resources/common/icon/title.ico" type="image/x-icon">
+<link rel="shortcut icon" href="resources/common/icon/title.ico" type="image/x-icon">
+<!-- <script type="text/javascript" src="resources/ext/Ext6.2/js/ext-all.js"></script> -->
+<!-- ext -->
+<script type="text/javascript" src="resources/ext/Ext6.2/js/build/ext-all-debug.js"></script>
+<script type="text/javascript" src="resources/ext/Ext6.2/js/ext-bootstrap.js"></script>
+<script type="text/javascript" src="resources/ext/Ext6.2/js/locale-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css" href="resources/ext/Ext6.2/css/theme-crisp/resources/theme-crisp-all.css" />
+<link rel="stylesheet" type="text/css" href="resources/ext/Ext6.2/css/theme-crisp/resources/theme-crisp-all-debug.css" />
+<!--jquery-->
+<script type="text/javascript" src="resources/jquery/jquery-3.2.1.js"></script>
+<!--require-->
+<!-- <script data-main="resources/form/main.js" src="resources/require/require.js"></script> -->
+<!--design.css-->
+<link rel="stylesheet" type="text/css" href="resources/common/css/design.css" />
+<!-- 导入mouse.js -->
+<script type="text/javascript" src="resources/common/js/mouse.js"></script>
+<script language='javascript'>
+//监听鼠标移动事件
+document.onmousemove = mouseMove;
+//鼠标按下事件
+document.onmousedown = mouseDown;
+//鼠标松开事件
+document.onmouseup = mouseUp;
+/*Ext.onReady(function(){
+    Ext.Loader.loadScript({ url: 'resources/form/desigener.js',scope:this,onLoad:function(){
+            //debugger;
+    }});
+});*/
+Ext.Loader.loadScript({ url: 'resources/form/desigener.js',scope:this,onLoad:function(){
+            //debugger;
+}});
+var designOnmouseover = function(item){
+    /*var className = item.className;
+    var hmi = 'hover-move-in ';
+    if(className.indexOf(hmi) < 0){
+        item.className = 'hover-move-in ' + className;
+    }*/
+}
+var designOnmouseout = function(item){
+    /*item.className.replace(' hover-move-in', '');*/
+}
+
+var designOnmousedown = function(item){
+    dragObject  = this;
+    mouseOffset = getMouseOffset(this, ev);
+    return false;
+}
+
+FormDesigner.loaded = true;
+</script>
+</head>
+<body>
+
+    <!-- <div>this is a test!</div> -->
+</body>
+</html>

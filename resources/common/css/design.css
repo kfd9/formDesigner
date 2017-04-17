@@ -1,0 +1,275 @@
+/*.hover-move-in{
+    border: 1px dashed #b4b4b4;
+    border-radius: 3px;
+}*/
+.form-ctltop {
+    width: 100%;
+    height: auto;
+    padding: 0 10px 0;
+    overflow: auto;
+    background: #ffffff;
+    border: none;
+    padding-top: 0;
+    color: #444;
+    color: #444;
+    zoom: 1;
+    cursor: default;
+}
+.ui-draggable-handle {
+    background: #ffffff;
+    margin: 10px 10px 0 0;
+    font-size: 0;
+    text-align: left;
+    padding-left: 38px;
+    white-space: nowrap;
+    position: relative;
+    padding: 0;
+    float: left;
+    width: 100px;
+    height: 45px;
+    line-height: 45px;
+    overflow: hidden;
+    border: 1px dashed #b4b4b4;
+    border-radius: 3px;
+    touch-action: none;
+    zoom: 1;
+    /*z-index: 10;*/
+}
+div span.form-label-img {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: 3px;
+    top: 50%;
+    margin-top: -16px;
+    zoom: 1;
+    z-index: 0;
+}
+div span.form-label-name {
+    display: block;
+    text-align: left;
+    font-family: microsoft yahei, "微软雅黑", "宋体", "新宋体";
+    height: 100%;
+    font-size: 12px;
+    vertical-align: top;
+    padding-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    zoom: 1;
+    margin-left: 37px;
+    /*z-index: 0;*/
+}
+.form-ctltop > div:hover {
+    cursor: pointer;
+    color: #5990CF;
+    border: 1px solid #5990cf;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, .13), -2px -2px 6px rgba(0, 0, 0, .13);
+}
+
+.form-icon-textfield-32,
+.form-icon-textarea-32,
+.form-icon-number-32,
+.form-icon-radio-32,
+.form-icon-multiselect-32,
+.form-icon-singleselect-32,
+.form-icon-image-32,
+.form-icon-imagesingle-32,
+.form-icon-imagemulti-32,
+.form-icon-datepicker-32,
+.form-icon-timepicker-32,
+.form-icon-score-32,
+.form-icon-attachment-32,
+.form-icon-goods-32,
+.form-icon-lbs-32,
+.form-icon-checkbox-32,
+.form-icon-nfclabel-32,
+.form-icon-seperateline-32,
+.form-icon-label-32,
+.form-icon-hidden-32,
+.form-icon-serialnumber-32,
+.form-icon-selectperson-32,
+.form-icon-selectdept-32,
+.form-icon-pager-32,
+.form-icon-address-32,
+.form-icon-handlesuggestion-32{
+    background: url("../icon/design-icons.png");
+}
+
+span.form-label-img.form-icon-textfield-32 {}
+.form-icon-textfield-32 {
+    background-position: -10px -10px;
+}
+.form-icon-textarea-32 {
+    background-position: -52px -10px;
+}
+.form-icon-number-32 {
+    background-position:  -94px -10px;
+}
+.form-icon-radio-32 {
+    background-position:  -136px -10px;
+}
+.form-icon-multiselect-32 {
+    background-position:  -178px -10px;
+}
+.form-icon-singleselect-32 {
+    background-position:  -220px -10px;
+}
+.form-icon-image-32 {
+    background-position:  -136px -136px;
+}
+.form-icon-imagesingle-32 {
+    background-position:  -262px -10px;
+}
+.form-icon-imagemulti-32 {
+    background-position:  -10px -52px;
+}
+.form-icon-datepicker-32 {
+    background-position:  -52px -52px;
+}
+.form-icon-timepicker-32 {
+    background-position:  -10px -184px;
+}
+.form-icon-score-32 {
+    background-position:  -94px -52px;
+}
+.form-icon-attachment-32 {
+    background-position: -136px -52px;
+}
+.form-icon-goods-32 {
+    background-position:  -178px -52px;
+}
+.form-icon-lbs-32 {
+    background-position:  -220px -52px;
+}
+.form-icon-checkbox-32 {
+    background-position:  -262px -52px;
+}
+.form-icon-nfclabel-32 {
+    background-position:  -10px -94px;
+}
+.form-icon-seperateline-32 {
+    background-position:  -52px -94px;
+}
+.form-icon-label-32 {
+    background-position:  -94px -94px;
+}
+.form-icon-hidden-32 {
+    background-position:  -52px -184px;
+}
+.form-icon-serialnumber-32 {
+    background-position:  -94px -184px;
+}
+.form-icon-selectperson-32{
+    background-position: -136px -184px;
+}
+.form-icon-selectdept-32{
+    background-position: -178px -184px;
+}
+.form-icon-pager-32{
+    background-position: -221px -186px;
+}
+.form-icon-address-32{
+    background-position: -262px -184px;
+}
+.form-icon-handlesuggestion-32{
+    background-position: -221px -220px;
+}
+.form-icon-imagegroup-32 {
+    background: url(../icon/design-icons.png) -178px -94px;
+}
+
+.form-designer-show-parent {
+    width: 700px;
+    height: 700px;
+    margin: 15px 0 0 0;
+}
+.form-designer-show-field {
+    width:350px;
+    height:35px;
+    float:left;
+    position: relative;
+    padding: 5px 0px 5px 0px;
+}
+
+.form-designer-show-field-active {
+    border: 1px dashed #5990CF !important;
+    background-color: #EBF6FF !important;
+}
+.design-copy-delete {
+
+    position: absolute;
+    top: -13px;
+    right: 5px;
+    display: none;
+    z-index: 3;
+    height: 24px;
+    width: auto;
+}
+
+.design-copy-delete-active {
+    display: block;
+}
+
+.design-copy-delete i {
+    background-image: url(../icon/design-ico-dele-copy.png);
+    background-repeat: no-repeat;
+}
+
+.design-ico-copy, .design-ico-delete {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    margin: 0 6px;
+    cursor: pointer;
+}
+
+.design-ico-copy {
+    background-position: 0 0;
+}
+
+.design-ico-copy:hover {
+    background-position: 0 -26px;
+}
+
+.design-ico-delete {
+    background-position: -26px 0;
+}
+
+.design-ico-delete:hover {
+    background-position: -26px -26px;
+}
+
+.form-designer-show-parent > div:hover {
+    cursor: move;
+    /*border: 1px dashed #b4b4b4;
+    border-radius: 3px;*/
+    /*border: 1px;
+    border-style: solid;
+    border-color: transparent;*/
+    border-bottom-color: rgb(89, 144, 207);
+    border-bottom-style: dashed;
+    border-bottom-width: 1px;
+    border-image-outset: 0px;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-left-color: rgb(89, 144, 207);
+    border-left-style: dashed;
+    border-left-width: 1px;
+    border-right-color: rgb(89, 144, 207);
+    border-right-style: dashed;
+    border-right-width: 1px;
+    border-top-color: rgb(89, 144, 207);
+    border-top-style: dashed;
+    border-top-width: 1px;
+}
+
+.form-designer-console-history {
+    font-size: 10px; 
+    overflow-y: auto; 
+    width: 100%; 
+    height: 100%;
+    font-family: verdana, tahoma, arial;
+}
