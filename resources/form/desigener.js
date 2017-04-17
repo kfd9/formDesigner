@@ -19,20 +19,20 @@
 
 var formFieldStore = Ext.create('Ext.data.Store', {
     data: [
-        { class:'form-icon-textfield-32', caption:'单行文本' },
-        { class:'form-icon-textarea-32', caption:'多行文本' },
-        { class:'form-icon-number-32', caption:'数字' },
-        { class:'form-icon-radio-32', caption:'单选框' },
-        { class:'form-icon-multiselect-32', caption:'多选框' },
-        { class:'form-icon-singleselect-32', caption:'下拉框' },
-        { class:'form-icon-image-32', caption:'上传图片' },
-        { class:'form-icon-datepicker-32', caption:'日期时间' },
-        { class:'form-icon-checkbox-32', caption:'开关' },
-        { class:'form-icon-label-32', caption:'文字说明' },
-        { class:'form-icon-hidden-32', caption:'隐藏框' },
-        { class:'form-icon-imagegroup-32', caption:'图片组' }
+        { class:'form-icon-textfield-32', caption:'单行文本', type:'textfield' },
+        { class:'form-icon-textarea-32', caption:'多行文本', type:'textarea' },
+        { class:'form-icon-number-32', caption:'数字', type:'numberfield'  },
+        { class:'form-icon-radio-32', caption:'单选框', type:'radio'  },
+        { class:'form-icon-multiselect-32', caption:'多选框', type:''  },
+        { class:'form-icon-singleselect-32', caption:'下拉框', type:'combo'  },
+        { class:'form-icon-image-32', caption:'上传图片', type:''  },
+        { class:'form-icon-datepicker-32', caption:'日期时间', type:'datefield'  },
+        { class:'form-icon-checkbox-32', caption:'开关', type:'checkbox'  },
+        { class:'form-icon-label-32', caption:'文字说明', type:'displayfield'  },
+        { class:'form-icon-hidden-32', caption:'隐藏框', type:'hidden'  },
+        { class:'form-icon-imagegroup-32', caption:'图片组', type:''  }
     ],
-    fields: ['class', 'caption']
+    fields: ['class', 'caption', 'type']
 });
 
 
@@ -41,7 +41,7 @@ var formFieldViewId = 'formFieldViewId';
 
 var formFieldTpl = new Ext.XTemplate(
     '<div class="form-ctltop" id="formFieldViewId"><tpl for=".">',
-        '<div form-category="base" class="ui-draggable-handle" form-field-view-id="formFieldViewId">',
+        '<div form-category="base" class="ui-draggable-handle" form-field-view-id="formFieldViewId" field-type="{type}">',
           '<span class="form-label-img {class}"></span>',
           '<span class="form-label-name">{caption}</span>',
         '</div>',
@@ -161,21 +161,13 @@ var setCursorMove = function(el){
     el.style.cursor = 'move';
 }
 
-var getFieldName = function(id){
+/*var getFieldName = function(type){
     if(id == 'testShow1'){
         return 'Ext.form.field.Text';
     }else{
         return 'Ext.form.field.Date';
     }
-    /*var num = Math.round(Math.random() * 2);
-    if(num === 1){
-        return 'Ext.form.field.Text';
-    }else if(num === 2){
-        return 'Ext.form.field.ComboBox';
-    }else{
-        return 'Ext.form.field.Text';
-    }*/
-}
+}*/
 
 var formFieldClick = function(item){
     if(formFieldSelector.length == 1
@@ -193,7 +185,7 @@ var formFieldDelClick = function(item){
     formFieldClick(item);
 }
 
-var createFormFieldDiv = function(id){
+var createFormFieldDiv = function(id, type){
     var f = document.getElementById('formShowViewId');
     var formFieldDiv = document.createElement("div");
     formFieldDiv.id = id;
@@ -202,6 +194,11 @@ var createFormFieldDiv = function(id){
         formFieldClick(formFieldDiv);
     };
     f.appendChild(formFieldDiv);
+    if(type == 'textarea'){
+        formFieldDiv.style.width = '700px';
+        formFieldDiv.style.height = '70px';
+    }
+    formFieldDiv.setAttribute("field-type", type);
     var formFieldCopyDelSpan = document.createElement("span");
     formFieldCopyDelSpan.className = 'design-copy-delete';
     var copyI = document.createElement("i");
@@ -220,9 +217,9 @@ var createFormFieldDiv = function(id){
     formFieldDiv.appendChild(formFieldCopyDelSpan);
 }
 
-var createFormField = function(id){
-    createFormFieldDiv(id);
-    Ext.create(getFieldName(id), {
+var createFormField = function(id, type){
+    createFormFieldDiv(id, type);
+    Ext.widget(type, {
         name: 'name',
         fieldLabel: 'Name1',
         disabled: true,
@@ -233,9 +230,6 @@ var createFormField = function(id){
     setCursorMove(id);
     makeDraggable(document.getElementById(id));
 }
-
-createFormField('testShow1');
-createFormField('testShow2');
 
 var makeFormFieldViewDraggable = function(){
     var formFieldDiv = document.getElementById('formFieldViewId');
@@ -250,3 +244,5 @@ makeFormFieldViewDraggable();
 createDragContainer(document.getElementById('formFieldViewId'), document.getElementById('formShowViewId'));
 createDragHelper();
 getFormShowViewPosition();
+
+/*createFormField('testShow' + (formFieldDivNum++), 'textfield');*/

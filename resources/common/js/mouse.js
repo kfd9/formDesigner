@@ -23,6 +23,9 @@ var allowPrintLog = false;
 
 var formShowViewPostion = null;
 
+//表单控件ID
+var formFieldDivNum = 0;
+
 
 function writeHistory(object, message) {
     if (!object || !object.parentNode || !object.parentNode.getAttribute)
@@ -83,7 +86,7 @@ function mouseMove(ev){
                     f.appendChild(formFieldDiv);
                 }
             }else{
-                delActiveChildren(f);
+                delActiveChildren(f, false);
             }
         }
     }
@@ -95,10 +98,13 @@ function mouseMove(ev){
     /*lMouseState = iMouseDown;*/
 }
 
-function delActiveChildren(e){
+function delActiveChildren(e, createField){
     var child = findActiveChildren(e);
     if(child){
         e.removeChild(child);
+        if(createField){
+            createFormField('testShow' + (formFieldDivNum++), dragObject.getAttribute('field-type'));
+        }
     }
 }
 
@@ -129,9 +135,12 @@ function mouseUp(ev) {
         curTarget.style.display = '';
         curTarget.style.visibility = 'visible';
     }*/
-    if(!mouseInForm){
+    /*if(!mouseInForm){
         dragHelper.style.display = 'none';
-    }
+    }*/
+    dragHelper.style.display = 'none';
+    var f = document.getElementById('formShowViewId');
+    delActiveChildren(f, true);
     curTarget = null;
     dragObject = null;
     iMouseDown = false;
@@ -253,6 +262,9 @@ var getMouseOffset = function(target, ev){
 var makeDraggable = function(item){
     if(!item) return;
     item.onmousedown = function(ev){
+        if(Ext.isEmpty(this.getAttribute('field-type'))){
+            return false;
+        }
         dragObject  = this;
         mouseOffset = getMouseOffset(this, ev);
         return false;
