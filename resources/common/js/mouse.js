@@ -32,6 +32,11 @@ var formFileTempDivInfo = null;
 //表单控件ID
 var formFieldDivNum = 0;
 
+//表单可视化区域
+var formShowViewDiv = null;
+//表单元素区域
+var formFieldViewDiv = null;
+
 
 function writeHistory(object, message) {
     if (!object || !object.parentNode || !object.parentNode.getAttribute)
@@ -83,15 +88,10 @@ function mouseMove(ev){
         /*return false;*/
         if(iMouseDown){//鼠标按下状态
             mouseInFormFn(mousePos);
-            var f = document.getElementById('formShowViewId');
             if(mouseInForm){
-                /*var haveActiveChildren = findActiveChildren(f);
-                if(haveActiveChildren){
-                    f.removeChild(haveActiveChildren);
-                }*/
-                createFormTempFieldDiv(f, mousePos);
+                createFormTempFieldDiv(formShowViewDiv, mousePos);
             }else{
-                delActiveChildren(f, false);
+                delActiveChildren(formShowViewDiv, false);
             }
         }
     }
@@ -132,7 +132,25 @@ function createFormTempFieldDiv(e, mousePos){
     //找到当前鼠标坐标在表单的什么地方
     var haveCreated = false;
     if(e.childElementCount > 0){
-        e.childNodes.forEach(function(node, index, nodeList){
+        $.each(e.childNodes, function(index, node){
+            if(node.getAttribute('field-type') != 'temp'){
+                var nodePos = getPositionAndSize(node);
+                nodePos.xMiddle = nodePos.x + parseInt(nodePos.width/2);
+                nodePos.xMax = nodePos.x + nodePos.width;
+                nodePos.yMiddle = nodePos.y + parseInt(nodePos.height/2);
+                nodePos.yMax = nodePos.y + nodePos.height;
+                if(mousePos.y >= nodePos.y && mousePos.y <= nodePos.yMax){
+                    if(mousePos.y <= nodePos.yMiddle){
+                        createFormTempFieldDivDetail(e, node);
+                    }else{
+                        createFormTempFieldDivDetail(e, e.childNodes[index+1]);
+                    }
+                    haveCreated = true;
+                    return false;
+                }
+            }
+        });
+        /*e.childNodes.forEach(function(node, index, nodeList){
             if(node.getAttribute('field-type') != 'temp'){
                 var nodePos = getPositionAndSize(node);
                 nodePos.xMiddle = nodePos.x + parseInt(nodePos.width/2);
@@ -149,7 +167,7 @@ function createFormTempFieldDiv(e, mousePos){
                     return;
                 }
             }
-        });
+        });*/
     }
     if(!haveCreated){
         createFormTempFieldDivDetail(e, null);
@@ -211,8 +229,7 @@ function mouseUp(ev) {
         dragHelper.style.display = 'none';
     }*/
     dragHelper.style.display = 'none';
-    var f = document.getElementById('formShowViewId');
-    delActiveChildren(f, true);
+    delActiveChildren(formShowViewDiv, true);
     curTarget = null;
     dragObject = null;
     iMouseDown = false;

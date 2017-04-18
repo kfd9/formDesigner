@@ -41,7 +41,7 @@ var formFieldViewId = 'formFieldViewId';
 
 var formFieldTpl = new Ext.XTemplate(
     '<div class="form-ctltop" id="formFieldViewId"><tpl for=".">',
-        '<div form-category="base" class="ui-draggable-handle" form-field-view-id="formFieldViewId" field-type="{type}">',
+        '<div form-category="base" class="ui-draggable-handle" form-field-view-id="formFieldViewId" field-type="{type}" field-show="0">',
           '<span class="form-label-img {class}"></span>',
           '<span class="form-label-name">{caption}</span>',
         '</div>',
@@ -79,6 +79,25 @@ var formFieldView = Ext.create('Ext.view.View', {
           { xtype: 'button', text: '新增' }
         ]
     });*/
+
+var attrPanel = Ext.create('Ext.panel.Panel', {
+    region: 'east',
+    title: '属性',
+    titleAlign: 'right',
+    collapsible: true,
+    collapseAlign: 'left',
+    split: true,
+    width: 200,
+    resizePanel: function(){},
+    listeners: {
+        afterlayout: function(pt, layout, eOpts){
+            this.tools[0].el.dom.style.left = 0;
+        },
+        resize: function(){
+            attrPanel.resizePanel();
+        }
+    }
+});
 
 var Designer = Ext.create('Ext.container.Viewport', {
     layout: 'border',
@@ -118,20 +137,7 @@ var Designer = Ext.create('Ext.container.Viewport', {
                 this.up().up().update('<div id="formConsole" class="form-designer-console-history">Information goes here</div>');
             }
         }]
-    }, {
-        region: 'east',
-        title: '属性',
-        titleAlign: 'right',
-        collapsible: true,
-        collapseAlign: 'left',
-        split: true,
-        width: 150,
-        listeners: {
-            afterlayout: function(pt, layout, eOpts){
-                this.tools[0].el.dom.style.left = 0;
-            }
-        }
-    }, {
+    }, attrPanel, {
         region: 'center',
         overflowY: 'auto',
         html: '<center><div class="form-designer-show-parent" id="formShowViewId"></div></center>'
@@ -140,8 +146,7 @@ var Designer = Ext.create('Ext.container.Viewport', {
 });
 
 var getFormShowViewPosition = function(){
-    var f = document.getElementById('formShowViewId');
-    formShowViewPostion = getPositionAndSize(f);
+    formShowViewPostion = getPositionAndSize(formShowViewDiv);
 }
 
 var setCursorMove = function(el){
@@ -162,57 +167,140 @@ var setCursorMove = function(el){
     el.style.cursor = 'move';
 }
 
-/*var getFieldName = function(type){
-    if(id == 'testShow1'){
-        return 'Ext.form.field.Text';
-    }else{
-        return 'Ext.form.field.Date';
+function createFieldAttr(id, type) {
+    attrPanel.removeAll();
+    var attrForm = Ext.create('Ext.form.Panel', {
+        layout: 'vbox',
+        // The fields
+        defaultType: 'textfield',
+        defaults: { // defaults are applied to items, not the container
+            scrollable: true
+        },
+        items: [{
+            xtype:'fieldset',
+            flex: 4,
+            title: '属性',
+            collapsible: true,
+            defaultType: 'textfield',
+            defaults: {anchor: '100%', labelAlign: 'top'},
+            layout: 'anchor',
+            items :[{
+                fieldLabel: '名称',
+                name: 'field1'
+            }, {
+                fieldLabel: '描述',
+                name: 'field2'
+            }, {
+                fieldLabel: '默认值',
+                name: 'field2'
+            }]
+        }, {
+            // Fieldset in Column 2 - collapsible via checkbox, collapsed by default, contains a panel
+            xtype:'fieldset',
+            flex: 3,
+            title: '校验',
+            collapsible: true,
+            defaultType: 'textfield',
+            defaults: {anchor: '100%', labelAlign: 'top'},
+            layout: 'anchor',
+            items :[{
+                fieldLabel: '最少字符',
+                xtype: 'numberfield',
+                name: 'field1'
+            }, {
+                fieldLabel: '最多字符',
+                xtype: 'numberfield',
+                name: 'field2'
+            }, {
+                xtype: 'checkbox',
+                name: '',
+                labelWidth: 56,
+                labelAlign: 'left',
+                fieldLabel: '是否必输'
+            }, {
+                xtype: 'checkbox',
+                name: '',
+                labelWidth: 56,
+                labelAlign: 'left',
+                fieldLabel: '是否只读'
+            }]
+        }, {
+            // Fieldset in Column 2 - collapsible via checkbox, collapsed by default, contains a panel
+            xtype:'fieldset',
+            flex: 3,
+            title: '布局',
+            collapsible: true,
+            defaultType: 'textfield',
+            defaults: {anchor: '100%', labelAlign: 'top'},
+            layout: 'anchor',
+            items :[{
+                fieldLabel: '布局描述',
+                name: 'field1'
+            }, {
+                xtype: 'radiogroup',
+                columns: 3,
+                vertical: true,
+                items: [
+                    { boxLabel: '100%', name: 'rb', inputValue: '1' },
+                    { boxLabel: '75%', name: 'rb', inputValue: '.75' },
+                    { boxLabel: '67%', name: 'rb', inputValue: '.67' },
+                    { boxLabel: '50%', name: 'rb', inputValue: '.5', checked: true},
+                    { boxLabel: '33%', name: 'rb', inputValue: '.33' },
+                    { boxLabel: '25%', name: 'rb', inputValue: '.25' }
+                ]
+            }]
+        }]
+    });
+    attrPanel.add(attrForm);
+    attrPanel.resizePanel = function(){
+        attrForm.updateLayout();
     }
-}*/
+}
 
-var formFieldClick = function(item){
+var formFieldClick = function(item, id, type){
     if(formFieldSelector.length == 1
         && formFieldSelector[0] == item){
         return false;
     }
     formFieldSelectorCancelAll();
     formFieldSelectorSelect(item);
+    createFieldAttr(id, type);
 }
 
-var formFieldCopyClick = function(item){
-    formFieldClick(item);
+var formFieldCopyClick = function(item, id, type){
+    formFieldClick(item, id, type);
 }
-var formFieldDelClick = function(item){
-    formFieldClick(item);
+var formFieldDelClick = function(item, id, type){
+    formFieldClick(item, id, type);
 }
 
 var createFormFieldDiv = function(id, type, select, el){
-    var f = document.getElementById('formShowViewId');
     var formFieldDiv = el ? el : document.createElement("div");
     formFieldDiv.id = id;
     formFieldDiv.className = 'form-designer-show-field';
     formFieldDiv.onclick = function(){
-        formFieldClick(formFieldDiv);
+        formFieldClick(formFieldDiv, id, type);
     };
     if(!el){
-        f.appendChild(formFieldDiv);
+        formShowViewDiv.appendChild(formFieldDiv);
     }
     if(type == 'textarea'){
-        formFieldDiv.style.width = '700px';
+        /*formFieldDiv.style.width = '700px';*/
         formFieldDiv.style.height = '70px';
     }
     formFieldDiv.setAttribute("field-type", type);
+    formFieldDiv.setAttribute("field-show", '1');
     var formFieldCopyDelSpan = document.createElement("span");
     formFieldCopyDelSpan.className = 'design-copy-delete';
     var copyI = document.createElement("i");
     copyI.className = 'design-ico-copy';
     copyI.onclick = function(){
-        formFieldCopyClick(formFieldDiv);
+        formFieldCopyClick(formFieldDiv, id, type);
     };
     var delI = document.createElement("i");
     delI.className = 'design-ico-delete';
     delI.onclick = function(){
-        formFieldDelClick(formFieldDiv);
+        formFieldDelClick(formFieldDiv, id, type);
     }
     formFieldCopyDelSpan.appendChild(copyI);
     formFieldCopyDelSpan.appendChild(delI);
@@ -243,15 +331,20 @@ var createFormField = function(type, select,el){
 }
 
 var makeFormFieldViewDraggable = function(){
-    var formFieldDiv = document.getElementById('formFieldViewId');
-    if(formFieldDiv.childElementCount > 0){
-        formFieldDiv.childNodes.forEach(function(node, index, nodeList){
+    if(formFieldViewDiv.childElementCount > 0){
+        formFieldViewDiv.childNodes.forEach(function(node, index, nodeList){
             makeDraggable(node);
         });
     }
 }
-makeFormFieldViewDraggable();
 
-createDragContainer(document.getElementById('formFieldViewId'), document.getElementById('formShowViewId'));
+
+/*createDragContainer(document.getElementById('formFieldViewId'), document.getElementById('formShowViewId'));*/
+
+
+formShowViewDiv = document.getElementById('formShowViewId');
+formFieldViewDiv = document.getElementById('formFieldViewId');
+
+makeFormFieldViewDraggable();
 createDragHelper();
 getFormShowViewPosition();
