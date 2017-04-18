@@ -26,6 +26,9 @@ var allowPrintLog = false;
 
 var formShowViewPostion = null;
 
+//记录临时区域信息
+var formFileTempDivInfo = null;
+
 //表单控件ID
 var formFieldDivNum = 0;
 
@@ -143,7 +146,7 @@ function createFormTempFieldDiv(e, mousePos){
                         createFormTempFieldDivDetail(e, nodeList[index+1]);
                     }
                     haveCreated = true;
-                    return false;
+                    return;
                 }
             }
         });
@@ -154,18 +157,28 @@ function createFormTempFieldDiv(e, mousePos){
 }
 
 function createFormTempFieldDivDetail(e, beforNode){
-    var formFieldDiv = document.createElement("div");
-    formFieldDiv.id = id;
-    formFieldDiv.className = 'form-designer-show-field form-designer-show-field-active';
-    formFieldDiv.onclick = function(){
-        formFieldClick(formFieldDiv);
-    };
-    formFieldDiv.setAttribute("field-type", 'temp');
-    delFormTempFieldDiv(e);
-    if(!beforNode){
-        e.appendChild(formFieldDiv);
-    }else{
-        e.insertBefore(formFieldDiv, beforNode);
+    if(beforNode
+        && beforNode.getAttribute('field-type') == 'temp'){
+        beforNode = beforNode.nextSibling;
+    }
+    if(formFileTempDivInfo == null
+        || formFileTempDivInfo.beforNode != beforNode){
+        var formFieldDiv = document.createElement("div");
+        formFieldDiv.id = id;
+        formFieldDiv.className = 'form-designer-show-field form-designer-show-field-active';
+        formFieldDiv.onclick = function(){
+            formFieldClick(formFieldDiv);
+        };
+        formFieldDiv.setAttribute("field-type", 'temp');
+        delFormTempFieldDiv(e);
+        if(!beforNode){
+            e.appendChild(formFieldDiv);
+        }else{
+            e.insertBefore(formFieldDiv, beforNode);
+        }
+        formFileTempDivInfo = {};
+        formFileTempDivInfo.beforNode = beforNode;
+        formFileTempDivInfo.formFieldDiv = formFieldDiv;
     }
 }
 
@@ -203,6 +216,7 @@ function mouseUp(ev) {
     curTarget = null;
     dragObject = null;
     iMouseDown = false;
+    formFileTempDivInfo = null;
 }
 
 function formFieldSelectorSelect(item){
