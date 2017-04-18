@@ -82,36 +82,34 @@ function mouseMove(ev){
             mouseInFormFn(mousePos);
             var f = document.getElementById('formShowViewId');
             if(mouseInForm){
-                if(!findActiveChildren(f)){
-                    var formFieldDiv = document.createElement("div");
-                    formFieldDiv.id = id;
-                    formFieldDiv.className = 'form-designer-show-field form-designer-show-field-active';
-                    formFieldDiv.onclick = function(){
-                        formFieldClick(formFieldDiv);
-                    };
-                    f.appendChild(formFieldDiv);
-                    formFieldDiv.setAttribute("field-type", 'temp');
-                }
+                /*var haveActiveChildren = findActiveChildren(f);
+                if(haveActiveChildren){
+                    f.removeChild(haveActiveChildren);
+                }*/
+                createFormTempFieldDiv(f, mousePos);
             }else{
                 delActiveChildren(f, false);
             }
         }
     }
-    /*if(iMouseDown && !lMouseState){
-        debugger;
-    }*/
-    /*console.log(lMouseState);
-    console.log(iMouseDown);*/
-    /*lMouseState = iMouseDown;*/
+}
+
+function removeChildrenElements(item){
+    if(item.childElementCount > 0){
+        for (var i = 0; i < item.childNodes.length; i++)
+            item.removeChild(item.childNodes[i]);
+    }
 }
 
 function delActiveChildren(e, createField){
     var child = findActiveChildren(e);
     if(child){
-        e.removeChild(child);
+        removeChildrenElements(child);
+        createFormField(dragObject.getAttribute('field-type'), true, child);
+        /*e.removeChild(child);
         if(createField){
             createFormField(dragObject.getAttribute('field-type'), true);
-        }
+        }*/
     }
 }
 
@@ -125,6 +123,60 @@ function findActiveChildren(e){
         });
     }
     return child;
+}
+
+function createFormTempFieldDiv(e, mousePos){
+    //找到当前鼠标坐标在表单的什么地方
+    var haveCreated = false;
+    if(e.childElementCount > 0){
+        e.childNodes.forEach(function(node, index, nodeList){
+            if(node.getAttribute('field-type') != 'temp'){
+                var nodePos = getPositionAndSize(node);
+                nodePos.xMiddle = nodePos.x + parseInt(nodePos.width/2);
+                nodePos.xMax = nodePos.x + nodePos.width;
+                nodePos.yMiddle = nodePos.y + parseInt(nodePos.height/2);
+                nodePos.yMax = nodePos.y + nodePos.height;
+                if(mousePos.y >= nodePos.y && mousePos.y <= nodePos.yMax){
+                    if(mousePos.y <= nodePos.yMiddle){
+                        createFormTempFieldDivDetail(e, node);
+                    }else{
+                        createFormTempFieldDivDetail(e, nodeList[index+1]);
+                    }
+                    haveCreated = true;
+                    return false;
+                }
+            }
+        });
+    }
+    if(!haveCreated){
+        createFormTempFieldDivDetail(e, null);
+    }
+}
+
+function createFormTempFieldDivDetail(e, beforNode){
+    var formFieldDiv = document.createElement("div");
+    formFieldDiv.id = id;
+    formFieldDiv.className = 'form-designer-show-field form-designer-show-field-active';
+    formFieldDiv.onclick = function(){
+        formFieldClick(formFieldDiv);
+    };
+    formFieldDiv.setAttribute("field-type", 'temp');
+    delFormTempFieldDiv(e);
+    if(!beforNode){
+        e.appendChild(formFieldDiv);
+    }else{
+        e.insertBefore(formFieldDiv, beforNode);
+    }
+}
+
+function delFormTempFieldDiv(e){
+    if(e.childElementCount > 0){
+        e.childNodes.forEach(function(node, index, nodeList){
+            if(node.getAttribute('field-type') == 'temp'){
+                e.removeChild(node);
+            }
+        });
+    }
 }
 
 function mouseUp(ev) {

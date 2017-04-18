@@ -186,15 +186,17 @@ var formFieldDelClick = function(item){
     formFieldClick(item);
 }
 
-var createFormFieldDiv = function(id, type, select){
+var createFormFieldDiv = function(id, type, select, el){
     var f = document.getElementById('formShowViewId');
-    var formFieldDiv = document.createElement("div");
+    var formFieldDiv = el ? el : document.createElement("div");
     formFieldDiv.id = id;
     formFieldDiv.className = 'form-designer-show-field';
     formFieldDiv.onclick = function(){
         formFieldClick(formFieldDiv);
     };
-    f.appendChild(formFieldDiv);
+    if(!el){
+        f.appendChild(formFieldDiv);
+    }
     if(type == 'textarea'){
         formFieldDiv.style.width = '700px';
         formFieldDiv.style.height = '70px';
@@ -221,10 +223,10 @@ var createFormFieldDiv = function(id, type, select){
     }
 }
 
-var createFormField = function(type, select){
+var createFormField = function(type, select,el){
     var num = formFieldDivNum++;
     var id = 'testShow' + num;
-    createFormFieldDiv(id, type, select);
+    createFormFieldDiv(id, type, select, el);
     Ext.widget(type, {
         name: 'Field' + num,
         fieldLabel: 'Field' + num,
